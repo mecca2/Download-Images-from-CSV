@@ -36,20 +36,20 @@ def imageUploader(name, imageName, directory, url, row):
     global failedImages
     imageName = imageName.replace("\n","")
     fullfilename = os.path.join(directory, imageName)
-    #print(url)
+
     imageIndex  = downloadedImages.index(imageName) if imageName in downloadedImages else -1
     image2Index  = failedImages.index(imageName) if imageName in failedImages else -1
     if imageIndex == -1 and image2Index == -1:
         try: 
             resp = urllib.request.urlopen(url)
             urllib.request.urlretrieve(url, fullfilename)
-            #print(resp.code)
+
         except urllib.request.HTTPError:
             importlogFail += str(row) + " \t" + name + "\t" + imageName + "\n"
             print("** FAILED -- Row: " + str(row) + " Sku: " + name + " Image: " + imageName)
             failedImages.append(imageName)
         else: 
-            #print('sucess')
+
             importlogPass += str(row) + " \t" + name + "\t" + imageName + "\n"
             print("Passed -- Row: " + str(row) + " Sku: " + name + " Image: " + imageName )
             downloadedImages.append(imageName)
@@ -102,20 +102,17 @@ def main():
                         imageUploader(splitted_line[0], splitted_line[2],uploadPath,splitted_line[1], i)
                     else:
                         print("No result for {0}".format(splitted_line[0]))
-                    #imageName = splitted_line[2].replace("\n","")
-                    #fullfilename = os.path.join(uploadPath, imageName)
-                    #urllib.request.urlretrieve(splitted_line[1], fullfilename)
+
                 else:
                     x = 0 
                     for item in splitted_line: 
                         if x != 0:
                             if item != '' and item != '\n':
-                                #print(baseurl + '/' + item)
                                 if item.startswith(" "):
                                     item = item[1:]
                                 imageUploader(splitted_line[0], item, uploadPath, baseurl + '/' + item.replace(" ","%20"), i)
                         x += 1
-                #print ("Image {0} saved for {1}".format(imageName, splitted_line[0]))
+
                 
             i += 1
 
